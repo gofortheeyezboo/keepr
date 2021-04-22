@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using keepr_server.Models;
 using keepr_server.Services;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace keepr_server.Controllers
 {
@@ -36,11 +37,12 @@ namespace keepr_server.Controllers
     }
 
     [HttpGet("{id}")]
-    public ActionResult<IEnumerable<Vault>> Get(int id)
+    public async Task<ActionResult<IEnumerable<Vault>>> GetAsync(int id)
     {
       try
       {
-        return Ok(_service.GetById(id));
+        Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+        return Ok(_service.GetById(id, userInfo?.Id));
       }
       catch (System.Exception err)
       {
@@ -93,10 +95,12 @@ namespace keepr_server.Controllers
       }
     }
     [HttpGet("{id}/keeps")]
-    public ActionResult<IEnumerable<VaultKeepViewModel>> GetProductsByListId(int id)
+    public async Task<ActionResult<IEnumerable<VaultKeepViewModel>>> GetKeepsByVaultIdAsync(int id)
     {
       try
       {
+        Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+        _service.GetById(id, userInfo?.Id);
         return Ok(_kservice.GetKeepsByVaultId(id));
       }
       catch (Exception e)

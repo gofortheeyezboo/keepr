@@ -15,14 +15,20 @@ namespace keepr_server.Services
 
     internal VaultKeep Create(VaultKeep newVaultKeep)
     {
-      //TODO if they are creating a vaultkeep, make sure they are the creator of the list
+      
       return _repo.Create(newVaultKeep);
 
     }
 
-    internal void Delete(int id)
+    internal void Delete(int id, string userId)
     {
-      //NOTE getbyid to validate its valid and you are the creator
+      VaultKeep vaultkeep = _repo.GetById(id);
+      if(vaultkeep == null){
+        throw new Exception("Invalid ID");
+      }
+      if(vaultkeep.CreatorId != userId){
+        throw new Exception("You can only interact with your own private data");
+      }
       _repo.Delete(id);
     }
   }

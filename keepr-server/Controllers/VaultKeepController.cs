@@ -35,11 +35,12 @@ namespace keepr_server.Controllers
     }
 
     [HttpDelete("{id}")]
-    public ActionResult<string> Delete(int id)
+    public async Task<ActionResult<string>> DeleteAsync(int id)
     {
       try
       {
-        _service.Delete(id);
+        Profile userData = await HttpContext.GetUserInfoAsync<Profile>();
+        _service.Delete(id, userData.Id);
         return Ok("deleted");
       }
       catch (System.Exception err)

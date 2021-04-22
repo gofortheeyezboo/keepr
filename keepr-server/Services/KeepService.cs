@@ -56,12 +56,12 @@ namespace keepr_server.Services
 
       return _repo.Edit(updated);
     }
-    internal IEnumerable<VaultKeepViewModel> GetKeepsByVaultId(int id){
+    internal IEnumerable<KeepVaultViewModel> GetKeepsByVaultId(int id){
         return _repo.GetKeepsByVaultId(id);
     }
     internal IEnumerable<KeepVaultViewModel> GetKeepsByProfileId(string id){
         IEnumerable<KeepVaultViewModel> keeps = _repo.GetKeepsByProfileId(id);
         return keeps;
     }
-    }
+  }
 }

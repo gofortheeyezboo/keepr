@@ -50,5 +50,18 @@ namespace keepr_server.Controllers
         return BadRequest(e.Message);
       }
     }
+        [HttpGet("{id}/vaults")]
+    public async Task<ActionResult<IEnumerable<VaultKeepViewModel>>> GetVaultsAsync(string id)
+    {
+      try
+      {
+        Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+        return Ok(_vservice.GetVaultsByProfileId(id));
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
   }
 }

@@ -1,15 +1,31 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo">
-    <h1 class="my-5 bg-dark text-light p-3 rounded d-flex align-items-center">
-      <span class="mx-2 text-white">Vue 3 Starter</span>
-    </h1>
+  <div class="home flex-grow-1 container-fluid ">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-3">
+        <h1 class="my-5 bg-dark text-light p-3 rounded d-flex align-items-center text-center">
+          <span class="mx-2 text-white">Keeps</span>
+        </h1>
+      </div>
+    </div>
+    <div class="row grid">
+      <KeepComponent v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
+    </div>
   </div>
 </template>
 
 <script>
+import { computed, onMounted, reactive } from 'vue'
+import { AppState } from '../AppState'
+import { keepService } from '../services/KeepService'
 export default {
-  name: 'Home'
+  name: 'Home',
+  setup() {
+    const state = reactive({
+      keeps: computed(() => AppState.keeps)
+    })
+    onMounted(() => keepService.getKeeps())
+    return { state }
+  }
 }
 </script>
 
@@ -22,4 +38,6 @@ export default {
     width: 200px;
   }
 }
+.grid-item { width: 200px; }
+.grid-item--width2 { width: 400px; }
 </style>

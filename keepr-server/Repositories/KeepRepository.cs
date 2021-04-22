@@ -76,27 +76,31 @@ namespace keepr_server.Repositories
       string sql = "DELETE FROM keeps WHERE id = @id LIMIT 1;";
       _db.Execute(sql, new { id });
     }
-    internal IEnumerable<VaultKeepViewModel> GetKeepsByVaultId(int id){
+    internal IEnumerable<KeepVaultViewModel> GetKeepsByVaultId(int id){
         string sql = @"
         SELECT
         k.*,
-        vk.id AS VaultKeepId
+        vk.id AS VaultKeepId,
+        profile.*
         FROM vaultkeeps vk
         JOIN keeps k ON k.id = vk.keepId
-        WHERE VaultId = @id;";
-        return _db.Query<VaultKeepViewModel>(sql, new {id});
+        JOIN profiles profile ON k.creatorId = profile.id
+        WHERE vaultId = @id;";
+        return _db.Query<KeepVaultViewModel, Profile, KeepVaultViewModel>(sql, (keep, profile) =>
+      {
+        keep.Creator = profile;
+        return keep;
+      }, new { id }, splitOn: "id");
     }
 internal IEnumerable<KeepVaultViewModel> GetKeepsByProfileId(string id)
     {
       string sql = @"
       SELECT
       keep.*,
-      vk.id AS VaultKeepId,
-      pr.*
-      FROM vaultkeeps vk
-      JOIN keeps keep ON vk.keepId = keep.id
-      JOIN profiles pr ON pr.id = keep.creatorId
-      WHERE vk.creatorId = @id;";
+      profile.*
+      FROM keeps keep
+      JOIN profiles profile ON keep.creatorId = profile.id
+      WHERE keep.creatorId = @id;";
 
       return _db.Query<KeepVaultViewModel, Profile, KeepVaultViewModel>(sql, (keep, profile) =>
       {
