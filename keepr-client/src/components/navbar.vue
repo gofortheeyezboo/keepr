@@ -1,6 +1,6 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <h1 class="text-light">Keepr</h1>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-color">
+    <h1 class="text-dark">Keepr</h1>
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
       </div>
@@ -16,15 +16,15 @@
     >
       <span class="navbar-toggler-icon" />
     </button>
-    <div class="collapse navbar-collapse" id="navbarText">
+    <div class="collapse navbar-collapse text-dark" id="navbarText">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <router-link :to="{ name: 'Home' }" class="nav-link">
+          <router-link :to="{ name: 'Home' }" class="nav-link text-dark">
             Home
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link :to="{ name: 'Account' }" class="nav-link">
+          <router-link :to="{ name: 'Account' }" class="nav-link text-dark">
             Account
           </router-link>
         </li>
@@ -116,5 +116,8 @@ a:hover {
 }
 .nav-item .nav-link.router-link-exact-active{
   color: var(--primary);
+}
+.bg-color {
+  background-color: aquamarine;
 }
 </style>

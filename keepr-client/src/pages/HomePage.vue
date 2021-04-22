@@ -1,6 +1,6 @@
 <template>
   <div class="home flex-grow-1 container-fluid ">
-    <div class="row align-items-center justify-content-center">
+    <div class="row align-items-center justify-content-center height">
       <div class="col-3">
         <h1 class="my-5 bg-dark text-light p-3 rounded d-flex align-items-center text-center">
           <span class="mx-auto text-white">Keeps</span>
@@ -39,6 +39,7 @@ export default {
     width: 200px;
   }
 }
+
 .grid-item { width: 200px; }
 .grid-item--width2 { width: 400px; }
 </style>

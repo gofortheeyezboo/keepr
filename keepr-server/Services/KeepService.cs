@@ -49,6 +49,8 @@ namespace keepr_server.Services
       Keep original = GetById(updated.Id);
       if (updated.CreatorId != original.CreatorId)
       {
+      updated.Views = updated.Views != null ? updated.Views : original.Views;
+      updated.Shares = updated.Shares != null ? updated.Shares : original.Shares;
         throw new Exception("You can only edit your own data");
       }
       updated.Name = updated.Name != null ? updated.Name : original.Name;

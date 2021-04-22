@@ -64,7 +64,7 @@
           </div>
           <img :src="keepProp.creator.picture" alt="">
           <p>{{ keepProp.creator.name }}</p>
-          <i class="fa fa-trash text-danger hover" data-dismiss="modal" aria-hidden="true" v-if="keepProp.creator.email == state.user.email" @click="deleteKeep"></i>
+          <i class="fa fa-trash text-danger hover" data-dismiss="modal" aria-hidden="true" v-if="keepProp.creator.email == state.user.email || keepProp.vaultKeepId" @click="deleteKeep"></i>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Close
           </button>
@@ -93,8 +93,10 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const state = reactive({
+      account: computed(() => AppState.account),
       user: computed(() => AppState.user),
       vaults: computed(() => AppState.vaults),
+      vault: computed(() => AppState.activeVault),
       newVaultKeep: {
       }
     })
@@ -103,12 +105,13 @@ export default {
       router,
       state,
       getVaultsByProfileId() {
-        profileService.getVaultsByProfileId(props.keepProp.creator.id)
+        profileService.getVaultsByProfileId(state.account.id)
       },
       async addToVault(id) {
         state.newVaultKeep.KeepId = props.keepProp.id
         state.newVaultKeep.VaultId = id
         await vaultKeepService.create(state.newVaultKeep)
+        this.getVaultsByProfileId(state.account.id)
         this.incrementKeeps()
       },
       deleteKeep() {

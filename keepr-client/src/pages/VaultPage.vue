@@ -1,10 +1,12 @@
 <template>
-  <div class="Vault ml-2">
+  <div class="Vault row ml-2">
     <h1 v-if="state.vault.creator && !state.loading && state.user.email">
       {{ state.vault.name }} <i v-if="state.vault.creator.email == state.user.email && state.loading == false" class="fa fa-trash text-danger hover" aria-hidden="true" @click="deleteVault"></i>
     </h1>
-    <h5>Keeps: {{ state.keeps.length }} </h5>
-    <KeepComponent v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
+    <h5 class="m-2">Keeps: {{ state.keeps.length }} </h5>
+    <div class="row">
+      <KeepComponent v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
+    </div>
   </div>
 </template>
 

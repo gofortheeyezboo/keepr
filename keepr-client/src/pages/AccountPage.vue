@@ -2,8 +2,8 @@
   <div class="about text-left">
     <div class="row mt-3" v-if="!state.loading && state.profile">
       <img class="rounded mt-3 ml-4" :src="state.profile.picture" alt="" />
-      <div class="col">
-        <h1>Welcome {{ state.profile.name }}</h1>
+      <div class="col-12">
+        <h1>Welcome {{ state.user.nickname }}</h1>
         <h1>Vaults: {{ state.vaults.length }} </h1>
         <h1>Keeps: {{ state.keeps.length }} </h1>
       </div>
@@ -176,13 +176,13 @@
 import { computed, onMounted, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { AppState } from '../AppState'
-import { profileService } from '../services/ProfileService'
+// import { profileService } from '../services/ProfileService'
 import { keepService } from '../services/KeepService'
 import { vaultService } from '../services/VaultService'
 import $ from 'jquery'
 import { accountService } from '../services/AccountService'
 export default {
-  name: 'Profile',
+  name: 'Account',
   setup() {
     const route = useRoute()
     const state = reactive({
@@ -196,17 +196,11 @@ export default {
       loading: true
     })
     onMounted(() => {
-      accountService.getAccount()
-    })
-    onMounted(() => {
       accountService.getKeepsByAccountId(state.account.id)
       state.loading = false
     })
     onMounted(() => {
       accountService.getVaultsByAccountId(state.account.id)
-    })
-    onMounted(() => {
-      profileService.getProfileById(state.account.id)
     })
     return {
       state,
