@@ -3,10 +3,11 @@
     <div class="row align-items-center justify-content-center">
       <div class="col-3">
         <h1 class="my-5 bg-dark text-light p-3 rounded d-flex align-items-center text-center">
-          <span class="mx-2 text-white">Keeps</span>
+          <span class="mx-auto text-white">Keeps</span>
         </h1>
       </div>
     </div>
+    <hr>
     <div class="row grid">
       <KeepComponent v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
     </div>

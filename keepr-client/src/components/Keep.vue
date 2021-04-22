@@ -1,8 +1,10 @@
 <template>
-  <div class="col-3 card bg-dark text-white hover" data-toggle="modal" :data-target="'#keepModal' + keepProp.id">
+  <div class="col-4 card bg-dark text-white hover" @click="incrementViews">
     <img class="card-img" :src="keepProp.img" alt="Card image">
-    <div class="card-img-overlay">
-      <i class="fa fa-user text-white card-text" style="position:absolute;bottom:14px;right:20px;" aria-hidden="true"></i>
+    <div class="card-img-overlay" data-toggle="modal" :data-target="'#keepModal' + keepProp.id">
+      <router-link :to="{ name: 'Profile', params: { id: keepProp.creatorId } }">
+        <i class="fa fa-user text-white card-text z" style="position:absolute;bottom:14px;right:20px;" aria-hidden="true"></i>
+      </router-link>
       <h5 class="card-title text-center" style="position:absolute;bottom:0">
         {{ keepProp.name }}
       </h5>
@@ -26,6 +28,7 @@
           </button>
         </div>
         <div class="modal-body">
+          <p>Keeps: {{ keepProp.keeps }} Views: {{ keepProp.views }} Shares: {{ keepProp.shares }}</p>
           <img class="card-img" :src="keepProp.img" alt="">
           <p class="mt-1">
             {{ keepProp.description }}
@@ -61,7 +64,7 @@
           </div>
           <img :src="keepProp.creator.picture" alt="">
           <p>{{ keepProp.creator.name }}</p>
-          <i class="fa fa-trash text-danger" data-dismiss="modal" aria-hidden="true" v-if="keepProp.creator.email == state.user.email" @click="deleteKeep"></i>
+          <i class="fa fa-trash text-danger hover" data-dismiss="modal" aria-hidden="true" v-if="keepProp.creator.email == state.user.email" @click="deleteKeep"></i>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Close
           </button>
@@ -106,6 +109,7 @@ export default {
         state.newVaultKeep.KeepId = props.keepProp.id
         state.newVaultKeep.VaultId = id
         await vaultKeepService.create(state.newVaultKeep)
+        this.incrementKeeps()
       },
       deleteKeep() {
         if (route.name === 'Vault') {
@@ -114,10 +118,19 @@ export default {
           }
         } else {
           if (window.confirm('Are You Sure?')) {
-            console.log(route)
             keepService.deleteKeep(props.keepProp.id)
           }
         }
+      },
+      async incrementViews() {
+        const tempKeep = props.keepProp
+        tempKeep.views++
+        await keepService.incrementViews(props.keepProp.id, tempKeep)
+      },
+      async incrementKeeps() {
+        const tempKeep = props.keepProp
+        tempKeep.keeps++
+        await keepService.incrementKeeps(props.keepProp.id, tempKeep)
       }
     }
   }
@@ -127,5 +140,8 @@ export default {
 <style scoped>
 .hover{
   cursor: pointer;
+}
+.z{
+  z-index: 1000;
 }
 </style>

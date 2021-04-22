@@ -60,7 +60,12 @@ namespace keepr_server.Services
 
       return _repo.Edit(updated);
     }
-    internal IEnumerable<VaultKeepViewModel> GetVaultsByProfileId(string id){
+
+        internal object GetVaultsByAccountId(string id) {
+          return _repo.GetByAccountId(id);
+        }
+
+        internal IEnumerable<VaultKeepViewModel> GetVaultsByProfileId(string id){
     IEnumerable<VaultKeepViewModel> vaults = _repo.GetVaultsByProfileId(id);
     return vaults.ToList().FindAll(v => v.IsPrivate == false);
     }

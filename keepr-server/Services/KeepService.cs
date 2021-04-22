@@ -53,11 +53,19 @@ namespace keepr_server.Services
       }
       updated.Name = updated.Name != null ? updated.Name : original.Name;
       updated.Description = updated.Description != null ? updated.Description : original.Description;
+      updated.Keeps = updated.Keeps != null ? updated.Keeps : original.Keeps;
+      updated.Shares = updated.Shares != null ? updated.Shares : original.Shares;
+      updated.Views = updated.Views != null ? updated.Views : original.Views;
 
       return _repo.Edit(updated);
     }
+
+    internal IEnumerable<Keep> GetKeepsByAccountId(string id) {
+      return _repo.GetKeepsByAccountId(id);
+    }
+
     internal IEnumerable<KeepVaultViewModel> GetKeepsByVaultId(int id){
-        return _repo.GetKeepsByVaultId(id);
+      return _repo.GetKeepsByVaultId(id);
     }
     internal IEnumerable<KeepVaultViewModel> GetKeepsByProfileId(string id){
         IEnumerable<KeepVaultViewModel> keeps = _repo.GetKeepsByProfileId(id);

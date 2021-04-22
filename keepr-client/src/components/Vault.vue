@@ -1,8 +1,8 @@
 <template>
-  <div class="col-3 card bg-dark text-white hover">
+  <div class="col-4 card bg-dark text-white hover">
     <router-link :to="{ name: 'Vault', params: { id: vaultProp.id } }">
       <div class="card-body">
-        <h5 class="card-title text-center" style="position:absolute;bottom:0">
+        <h5 class="card-title text-center text-white" style="position:absolute;bottom:0">
           {{ vaultProp.name }}
         </h5>
       </div>

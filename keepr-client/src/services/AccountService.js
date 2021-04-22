@@ -11,6 +11,24 @@ class AccountService {
       logger.error('HAVE YOU STARTED YOUR SERVER YET???', err)
     }
   }
+
+  async getKeepsByAccountId() {
+    try {
+      const res = await api.get('/account/keeps')
+      AppState.keeps = res.data
+    } catch (error) {
+      logger.log(error)
+    }
+  }
+
+  async getVaultsByAccountId() {
+    try {
+      const res = await api.get('/account/vaults')
+      AppState.vaults = res.data
+    } catch (error) {
+      logger.log(error)
+    }
+  }
 }
 
 export const accountService = new AccountService()

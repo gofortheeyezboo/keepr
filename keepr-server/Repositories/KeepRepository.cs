@@ -65,13 +65,30 @@ namespace keepr_server.Repositories
         UPDATE keeps
         SET
          name = @Name,
-         description = @Description
+         description = @Description,
+         views = @Views,
+         shares = @Shares,
+         keeps = @Keeps
         WHERE id = @Id;";
       _db.Execute(sql, updated);
       return updated;
     }
 
-    internal void Delete(int id)
+    internal IEnumerable<Keep> GetKeepsByAccountId(string id)  {
+      string sql =@"
+      SELECT
+      keep.*,
+      profile.*
+      FROM keeps keep
+      JOIN profiles profile ON keep.creatorId = profile.id
+      WHERE keep.creatorId = @id;";
+      return _db.Query<Keep, Profile, Keep>(sql, (keep, profile) => {
+        keep.Creator = profile;
+        return keep;
+      }, new { id }, splitOn: "id");
+    }
+
+        internal void Delete(int id)
     {
       string sql = "DELETE FROM keeps WHERE id = @id LIMIT 1;";
       _db.Execute(sql, new { id });

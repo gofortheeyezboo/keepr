@@ -10,7 +10,7 @@
     </div>
     <div class="row">
       <h1 class="ml-4 mt-4">
-        Vaults <i v-if="route.params.id == state.user.email" class="fa fa-plus hover" aria-hidden="true" data-toggle="modal" data-target="#createVault"></i>
+        Vaults <i class="fa fa-plus hover" aria-hidden="true" data-toggle="modal" data-target="#createVault"></i>
       </h1>
     </div>
     <div class="row" v-if="!state.loading && state.vaults">
@@ -91,7 +91,7 @@
     </div>
     <div class="row">
       <h1 class="ml-4">
-        Keeps <i v-if="route.params.id == state.user.email" class="fa fa-plus hover" aria-hidden="true" data-toggle="modal" data-target="#createKeep"></i>
+        Keeps <i class="fa fa-plus hover" aria-hidden="true" data-toggle="modal" data-target="#createKeep"></i>
       </h1>
     </div>
     <div class="row" v-if="!state.loading && state.keeps">
@@ -180,6 +180,7 @@ import { profileService } from '../services/ProfileService'
 import { keepService } from '../services/KeepService'
 import { vaultService } from '../services/VaultService'
 import $ from 'jquery'
+import { accountService } from '../services/AccountService'
 export default {
   name: 'Profile',
   setup() {
@@ -195,14 +196,17 @@ export default {
       loading: true
     })
     onMounted(() => {
-      profileService.getKeepsByProfileId(route.params.id)
+      accountService.getAccount()
+    })
+    onMounted(() => {
+      accountService.getKeepsByAccountId(state.account.id)
       state.loading = false
     })
     onMounted(() => {
-      profileService.getVaultsByProfileId(route.params.id)
+      accountService.getVaultsByAccountId(state.account.id)
     })
     onMounted(() => {
-      profileService.getProfileById(route.params.id)
+      profileService.getProfileById(state.account.id)
     })
     return {
       state,

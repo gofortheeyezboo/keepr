@@ -39,5 +39,13 @@ class KeepService {
     await api.delete('api/keeps/' + id)
     this.getKeeps()
   }
+
+  async incrementKeeps(id, keep) {
+    await api.put('api/keeps/' + id, keep)
+  }
+
+  async incrementViews(id, keep) {
+    await api.put('api/keeps/' + id, keep)
+  }
 }
 export const keepService = new KeepService()

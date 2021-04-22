@@ -1,5 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <h1 class="text-light">Keepr</h1>
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
       </div>
@@ -20,6 +21,11 @@
         <li class="nav-item">
           <router-link :to="{ name: 'Home' }" class="nav-link">
             Home
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link :to="{ name: 'Account' }" class="nav-link">
+            Account
           </router-link>
         </li>
         <li class="nav-item">

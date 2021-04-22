@@ -17,20 +17,21 @@ namespace keepr_server.Controllers
   public class AccountController : ControllerBase
   {
     private readonly ProfileService _ps;
+    private readonly KeepService _ks;
+    private readonly VaultService _vs;
 
-    public AccountController(ProfileService ps)
+    public AccountController(ProfileService ps, KeepService ks, VaultService vs)
     {
       _ps = ps;
+      _ks = ks;
+      _vs = vs;
     }
 
     [HttpGet]
-    // REVIEW[epic=Authentication] async calls must return a System.Threading.Tasks, this is equivalent to a promise in JS
     public async Task<ActionResult<Profile>> Get()
     {
       try
       {
-        // REVIEW[epic=Authentication] how to get the user info from the request token
-        // same as to req.userInfo
         Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
         return Ok(_ps.GetOrCreateProfile(userInfo));
       }
@@ -39,5 +40,15 @@ namespace keepr_server.Controllers
         return BadRequest(e.Message);
       }
     }
+    [HttpGet("vaults")]
+    public async Task<ActionResult<IEnumerable<Vault>>> GetVaultsByAccountId() {
+      Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+      return Ok(_vs.GetVaultsByAccountId(userInfo.Id));
+    }
+    [HttpGet("keeps")]
+    public async Task<ActionResult<IEnumerable<Keep>>> GetKeepsByAccountId() {
+      Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+      return Ok(_ks.GetKeepsByAccountId(userInfo.Id));
+        }
   }
 }
