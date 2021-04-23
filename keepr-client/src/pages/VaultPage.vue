@@ -40,10 +40,10 @@ export default {
       state,
       route,
       router,
-      deleteVault() {
+      async deleteVault() {
         if (window.confirm('Are You Sure?')) {
-          vaultService.deleteVault(state.vault.id)
-          router.push({ name: 'Home' })
+          await vaultService.deleteVault(state.vault.id)
+          router.push({ name: 'Account' })
         }
       }
     }

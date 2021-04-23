@@ -1,73 +1,80 @@
 <template>
-  <div class="col-4 card bg-dark text-white hover" @click="incrementViews">
+  <div class="card bg-dark text-white hover" @click="incrementViews">
     <img class="card-img" :src="keepProp.img" alt="Card image">
     <div class="card-img-overlay" data-toggle="modal" :data-target="'#keepModal' + keepProp.id">
       <router-link :to="{ name: 'Profile', params: { id: keepProp.creatorId } }">
         <i class="fa fa-user text-white card-text z" style="position:absolute;bottom:14px;right:20px;" aria-hidden="true"></i>
       </router-link>
-      <h5 class="card-title text-center" style="position:absolute;bottom:0">
+      <h5 class="card-body text-center" style="position:absolute;bottom:-18px;left:-3px">
         {{ keepProp.name }}
       </h5>
     </div>
   </div>
-  <div class="modal fade"
+  <div class="modal"
        :id="'keepModal' + keepProp.id"
        tabindex="-1"
        role="dialog"
        aria-labelledby="keepModalLabel"
        aria-hidden="true"
   >
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog-lg" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="keepModalLabel">
-            {{ keepProp.name }}
-          </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
         <div class="modal-body">
-          <p>Keeps: {{ keepProp.keeps }} Views: {{ keepProp.views }} Shares: {{ keepProp.shares }}</p>
-          <img class="card-img" :src="keepProp.img" alt="">
-          <p class="mt-1">
-            {{ keepProp.description }}
-            <router-link :to="{ name: 'Profile', params: { id: keepProp.creatorId } }">
-              <i class="fa fa-user text-dark card-text float-right" aria-hidden="true" data-dismiss="modal"></i>
-            </router-link>
-          </p>
-        </div>
-        <div class="modal-footer justify-content-between" v-if="keepProp.creator">
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    @click="getVaultsByProfileId"
-            >
-              Add to Vault
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <button class="dropdown-item"
-                      @click="addToVault(v.id)"
-                      v-for="v in state.vaults"
-                      :key="v.id"
-                      :vault-prop="v"
-                      href="#"
-                      data-dismiss="modal"
+          <div class="container-fluid">
+            <div class="row">
+              <button
+                style="position:absolute;top:0px;right:5px;"
+                class="close"
+                data-toggle="modal"
+                :data-target="'#keepModal' + keepProp.id"
+                aria-label="Close"
               >
-                {{ v.name }}
+                <span aria-hidden="true">&times;</span>
               </button>
             </div>
+            <div class="row">
+              <img class="img-fluid col-6" :src="keepProp.img" alt="">
+              <div class="col-6 d-flex flex-column">
+                <small class="mb-2">Keeps: {{ keepProp.keeps }} <i class="fa fa-eye" aria-hidden="true"></i> {{ keepProp.views }} <i class="fa fa-share-alt" aria-hidden="true"></i> {{ keepProp.shares }}</small>
+                <h1 class="mt-3">
+                  {{ keepProp.name }}
+                </h1>
+                <hr>
+                <p>{{ keepProp.description }}</p>
+                <div class="row sticky-bottom text-center mt-auto align-items-baseline justify-content-around">
+                  <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle m-auto"
+                            type="button"
+                            id="dropdownMenuButton"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            @click="getVaultsByProfileId"
+                    >
+                      Add to Vault
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <button class="dropdown-item"
+                              @click="addToVault(v.id)"
+                              v-for="v in state.vaults"
+                              :key="v.id"
+                              :vault-prop="v"
+                              href="#"
+                              data-toggle="modal"
+                              :data-target="'#keepModal' + keepProp.id"
+                      >
+                        {{ v.name }}
+                      </button>
+                    </div>
+                  </div>
+                  <router-link data-toggle="modal" :data-target="'#keepModal' + keepProp.id" :to="{ name: 'Profile', params: { id: keepProp.creatorId } }">
+                    <p><img class="pic" :src="keepProp.creator.picture" alt="">{{ keepProp.creator.name }}</p>
+                  </router-link>
+                  <i class="fa fa-trash text-danger hover" data-dismiss="modal" aria-hidden="true" v-if="keepProp.creator.email == state.user.email || state.vault.creatorId == state.account.id" @click="deleteKeep"></i>
+                </div>
+              </div>
+            </div>
           </div>
-          <img :src="keepProp.creator.picture" alt="">
-          <p>{{ keepProp.creator.name }}</p>
-          <i class="fa fa-trash text-danger hover" data-dismiss="modal" aria-hidden="true" v-if="keepProp.creator.email == state.user.email || keepProp.vaultKeepId" @click="deleteKeep"></i>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Close
-          </button>
         </div>
       </div>
     </div>
@@ -81,6 +88,8 @@ import { AppState } from '../AppState'
 import { vaultKeepService } from '../services/VaultKeepService'
 import { profileService } from '../services/ProfileService'
 import { keepService } from '../services/KeepService'
+import { accountService } from '../services/AccountService'
+import $ from 'jquery'
 export default {
   name: 'KeepComponent',
   props: {
@@ -104,8 +113,8 @@ export default {
       route,
       router,
       state,
-      getVaultsByProfileId() {
-        profileService.getVaultsByProfileId(state.account.id)
+      getVaultsByAccountId() {
+        accountService.getVaultsByAccountId(state.account.id)
       },
       async addToVault(id) {
         state.newVaultKeep.KeepId = props.keepProp.id
@@ -114,14 +123,21 @@ export default {
         this.getVaultsByProfileId(state.account.id)
         this.incrementKeeps()
       },
-      deleteKeep() {
+      async deleteKeep() {
         if (route.name === 'Vault') {
           if (window.confirm('Are You Sure You Want To Remove From Vault?')) {
-            vaultKeepService.deleteKeepFromVault(props.keepProp.vaultKeepId, route.params.id)
+            await vaultKeepService.deleteKeepFromVault(props.keepProp.vaultKeepId, route.params.id)
+            this.getKeepsByAccountId(route.params.id)
           }
-        } else {
+        } else if (route.name === 'Profile') {
           if (window.confirm('Are You Sure?')) {
-            keepService.deleteKeep(props.keepProp.id)
+            await keepService.deleteKeep(props.keepProp.id)
+            profileService.getKeepsByProfileId(route.params.id)
+          }
+        } else if (route.name === 'Account') {
+          if (window.confirm('Are You Sure?')) {
+            await keepService.deleteKeep(props.keepProp.id)
+            accountService.getKeepsByAccountId(state.account.id)
           }
         }
       },
@@ -134,6 +150,10 @@ export default {
         const tempKeep = props.keepProp
         tempKeep.keeps++
         await keepService.incrementKeeps(props.keepProp.id, tempKeep)
+      },
+      closeModal(id) {
+        console.log('closingmodal', id)
+        $('#keepModal' + id).modal('hide')
       }
     }
   }
@@ -146,5 +166,15 @@ export default {
 }
 .z{
   z-index: 1000;
+}
+.pic{
+  display: inline-block;
+  padding: 8px;
+  object-fit: cover;
+  margin: auto;
+  border-radius: 50%;
+  width: 80px;
+  height:80px;
+  box-shadow: 6px,6px,12px,16px black;
 }
 </style>

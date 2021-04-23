@@ -2,7 +2,7 @@
   <div class="about text-left">
     <div class="row mt-3" v-if="!state.loading && state.profile">
       <img class="rounded mt-3 ml-4" :src="state.profile.picture" alt="" />
-      <div class="col-12">
+      <div class="col">
         <h1>Welcome {{ state.user.nickname }}</h1>
         <h1>Vaults: {{ state.vaults.length }} </h1>
         <h1>Keeps: {{ state.keeps.length }} </h1>
@@ -87,7 +87,11 @@
           </div>
         </div>
       </div>
-      <VaultComponent v-for="v in state.vaults" :key="v.id" :vault-prop="v" />
+      <div class="col-11">
+        <div class="card-columns h-100">
+          <VaultComponent v-for="v in state.vaults" :key="v.id" :vault-prop="v" />
+        </div>
+      </div>
     </div>
     <div class="row">
       <h1 class="ml-4">
@@ -167,7 +171,11 @@
           </div>
         </div>
       </div>
-      <KeepComponent v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
+      <div class="col-11">
+        <div class="card-columns h-100">
+          <KeepComponent v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -207,11 +215,13 @@ export default {
       route,
       async createKeep() {
         await keepService.createKeep(state.newKeep)
+        accountService.getKeepsByAccountId(state.account.id)
         $('#createKeep').modal('hide')
         state.newKeep = {}
       },
       async createVault() {
         await vaultService.createVault(state.newVault)
+        accountService.getVaultsByAccountId(state.account.id)
         $('#createVault').modal('hide')
         state.newVault = {}
       }

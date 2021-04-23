@@ -9,7 +9,11 @@
     </div>
     <hr>
     <div class="row grid">
-      <KeepComponent v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
+      <div class="col-11">
+        <div class="card-columns h-100">
+          <KeepComponent v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
+        </div>
+      </div>
     </div>
   </div>
 </template>

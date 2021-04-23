@@ -23,7 +23,7 @@ class VaultService {
 
   async createVault(vault) {
     await api.post('api/vaults', vault)
-    this.getVaults()
+    // this.getVaults()
   }
 
   async deleteVault(id) {

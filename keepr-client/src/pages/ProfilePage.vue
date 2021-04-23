@@ -10,7 +10,7 @@
     </div>
     <div class="row">
       <h1 class="ml-4 mt-4">
-        Vaults <i v-if="route.params.id == state.user.email" class="fa fa-plus hover" aria-hidden="true" data-toggle="modal" data-target="#createVault"></i>
+        Vaults <i v-if="route.params.id == state.account.id" class="fa fa-plus hover" aria-hidden="true" data-toggle="modal" data-target="#createVault"></i>
       </h1>
     </div>
     <div class="row" v-if="!state.loading && state.vaults">
@@ -87,11 +87,15 @@
           </div>
         </div>
       </div>
-      <VaultComponent v-for="v in state.vaults" :key="v.id" :vault-prop="v" />
+      <div class="col-11">
+        <div class="card-columns h-100">
+          <VaultComponent v-for="v in state.vaults" :key="v.id" :vault-prop="v" />
+        </div>
+      </div>
     </div>
     <div class="row">
       <h1 class="ml-4">
-        Keeps <i v-if="route.params.id == state.user.email" class="fa fa-plus hover" aria-hidden="true" data-toggle="modal" data-target="#createKeep"></i>
+        Keeps <i v-if="route.params.id == state.account.id" class="fa fa-plus hover" aria-hidden="true" data-toggle="modal" data-target="#createKeep"></i>
       </h1>
     </div>
     <div class="row" v-if="!state.loading && state.keeps">
@@ -167,7 +171,11 @@
           </div>
         </div>
       </div>
-      <KeepComponent v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
+      <div class="col-11">
+        <div class="card-columns h-100">
+          <KeepComponent v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -209,11 +217,13 @@ export default {
       route,
       async createKeep() {
         await keepService.createKeep(state.newKeep)
+        profileService.getKeepsByProfileId(route.params.id)
         $('#createKeep').modal('hide')
         state.newKeep = {}
       },
       async createVault() {
         await vaultService.createVault(state.newVault)
+        profileService.getVaultsByProfileId(route.params.id)
         $('#createVault').modal('hide')
         state.newVault = {}
       }

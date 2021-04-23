@@ -32,12 +32,12 @@ class KeepService {
 
   async createKeep(keep) {
     await api.post('api/keeps', keep)
-    this.getKeeps()
+    // this.getKeeps()
   }
 
   async deleteKeep(id) {
     await api.delete('api/keeps/' + id)
-    this.getKeeps()
+    // this.getKeeps()
   }
 
   async incrementKeeps(id, keep) {

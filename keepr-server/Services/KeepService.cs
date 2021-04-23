@@ -47,7 +47,7 @@ namespace keepr_server.Services
     internal Keep Edit(Keep updated)
     {
       Keep original = GetById(updated.Id);
-      if (updated.CreatorId != original.CreatorId)
+      if (updated.CreatorId != original.CreatorId && updated.Name != null)
       {
       updated.Views = updated.Views != null ? updated.Views : original.Views;
       updated.Shares = updated.Shares != null ? updated.Shares : original.Shares;
