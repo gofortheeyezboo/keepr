@@ -17,7 +17,7 @@
        aria-labelledby="keepModalLabel"
        aria-hidden="true"
   >
-    <div class="modal-dialog-lg" role="document">
+    <div class="modal-dialog-md" role="document">
       <div class="modal-content">
         <div class="modal-body">
           <div class="container-fluid">
@@ -34,7 +34,7 @@
             </div>
             <div class="row">
               <img class="img-fluid col-6" :src="keepProp.img" alt="">
-              <div class="col-6 d-flex flex-column">
+              <div class="col-6 d-flex flex-column text-center">
                 <small class="mb-2">Keeps: {{ keepProp.keeps }} <i class="fa fa-eye" aria-hidden="true"></i> {{ keepProp.views }} <i class="fa fa-share-alt" aria-hidden="true"></i> {{ keepProp.shares }}</small>
                 <h1 class="mt-3">
                   {{ keepProp.name }}
@@ -68,7 +68,7 @@
                     </div>
                   </div>
                   <router-link data-toggle="modal" :data-target="'#keepModal' + keepProp.id" :to="{ name: 'Profile', params: { id: keepProp.creatorId } }">
-                    <p><img class="pic" :src="keepProp.creator.picture" alt="">{{ keepProp.creator.name }}</p>
+                    <p class="text-dark"><img class="pic" :src="keepProp.creator.picture" alt="">{{ keepProp.creator.name }}</p>
                   </router-link>
                   <i class="fa fa-trash text-danger hover" data-dismiss="modal" aria-hidden="true" v-if="keepProp.creator.email == state.user.email || state.vault.creatorId == state.account.id" @click="deleteKeep"></i>
                 </div>

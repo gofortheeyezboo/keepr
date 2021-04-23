@@ -118,6 +118,6 @@ a:hover {
   color: var(--primary);
 }
 .bg-color {
-  background-color: aquamarine;
+  background-color:darkblue;
 }
 </style>

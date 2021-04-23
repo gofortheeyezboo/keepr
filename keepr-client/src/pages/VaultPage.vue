@@ -4,8 +4,12 @@
       {{ state.vault.name }} <i v-if="state.vault.creator.email == state.user.email && state.loading == false" class="fa fa-trash text-danger hover" aria-hidden="true" @click="deleteVault"></i>
     </h1>
     <h5 class="m-2">Keeps: {{ state.keeps.length }} </h5>
-    <div class="row">
-      <KeepComponent v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
+    <div class="row grid justify-content-around">
+      <div class="col-11">
+        <div class="card-columns h-100">
+          <KeepComponent v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
+        </div>
+      </div>
     </div>
   </div>
 </template>

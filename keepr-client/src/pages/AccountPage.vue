@@ -13,7 +13,7 @@
         Vaults <i class="fa fa-plus hover" aria-hidden="true" data-toggle="modal" data-target="#createVault"></i>
       </h1>
     </div>
-    <div class="row" v-if="!state.loading && state.vaults">
+    <div class="row justify-content-around" v-if="!state.loading && state.vaults">
       <div class="container-fluid">
         <div
           class="modal fade"
@@ -98,7 +98,7 @@
         Keeps <i class="fa fa-plus hover" aria-hidden="true" data-toggle="modal" data-target="#createKeep"></i>
       </h1>
     </div>
-    <div class="row" v-if="!state.loading && state.keeps">
+    <div class="row justify-content-around" v-if="!state.loading && state.keeps">
       <div class="container-fluid">
         <div
           class="modal fade"
