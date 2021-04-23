@@ -234,7 +234,5 @@ export default {
 .hover{
   cursor: pointer;
 }
-img {
-  max-width: 100px;
-}
+
 </style>

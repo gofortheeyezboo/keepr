@@ -3,7 +3,7 @@
     <div class="row mt-3" v-if="!state.loading && state.profile">
       <img class="rounded mt-3 ml-4" :src="state.profile.picture" alt="" />
       <div class="col">
-        <h1>Welcome {{ state.profile.name }}</h1>
+        <h1>Welcome to {{ state.profile.name }}'s profile</h1>
         <h1>Vaults: {{ state.vaults.length }} </h1>
         <h1>Keeps: {{ state.keeps.length }} </h1>
       </div>
@@ -236,7 +236,5 @@ export default {
 .hover{
   cursor: pointer;
 }
-img {
-  max-width: 100px;
-}
+
 </style>
